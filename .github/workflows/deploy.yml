@@ -10,20 +10,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+      - name: Setup GCP Service Account
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
-          project_id: ${{ secrets.PROJECT_ID }}
-
-      - name: Configure gcloud CLI
-        run: |
-          gcloud config set project x-object-425917-m2
-          gcloud auth configure-docker asia-southeast1-docker.pkg.dev
-
-      - name: Auth gcloud
-        run: |
-          gcloud auth login
-          gcloud config set account ACCOUNT
+          version: "latest"
+          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
 
       - name: Deploy AI Service
         env:
