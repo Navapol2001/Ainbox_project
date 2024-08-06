@@ -20,6 +20,11 @@ jobs:
           gcloud config set project x-object-425917-m2
           gcloud auth configure-docker asia-southeast1-docker.pkg.dev
 
+      - name: Auth gcloud
+        run: |
+          gcloud auth login
+          gcloud config set account ACCOUNT
+
       - name: Deploy AI Service
         env:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
