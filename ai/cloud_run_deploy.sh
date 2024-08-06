@@ -9,7 +9,7 @@ gcloud run deploy ainbox \
     --service-account navapol-service@$PROJECT_ID.iam.gserviceaccount.com \
     --platform managed \
     --region asia-southeast1 \
-    --no-allow-unauthenticated \
+    --allow-unauthenticated \
     --min-instances=1 \
     --max-instances=10 \
     --port 8080 \
