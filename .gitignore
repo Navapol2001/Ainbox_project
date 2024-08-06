@@ -1,0 +1,116 @@
+.next
+.vscode
+node_modules
+yarn.lock
+
+# use glob syntax.
+syntax: glob
+*.ser
+*.class
+*~
+*.bak
+*.off
+*.old
+.DS_Store
+
+# logs
+*.log
+
+# eclipse conf file
+.settings
+.classpath
+.project
+.manager
+.externalToolBuilders
+.cache
+
+# ensime/emacs conf files
+.ensime
+.ensime_cache
+.scala_dependencies
+
+# building
+build
+target
+null
+tmp*
+dist
+test-output
+out
+
+# sbt
+target
+lib_managed
+src_managed
+project/boot
+project/plugins/project
+project/project
+
+# other scm
+.svn
+.CVS
+.hg*
+.history
+
+# switch to regexp syntax.
+#  syntax: regexp
+#  ^\.pc/
+
+# IntelliJ
+*.eml
+*.iml
+*.ipr
+*.iws
+.idea
+!server/.idea
+server/.idea/*
+!server/.idea/codeStyles
+!server/.idea/codeStyles/*
+
+# Pax Runner (for easy OSGi launching)
+runner
+
+# Vagrant
+.vagrant
+
+# ActiveMQ
+activemq-data
+
+# docker
+docker/run.sh
+
+flyway.conf
+application.conf
+
+# gradle
+application-local.properties
+local.properties
+.gradle
+.gradletasknamecache
+gradle.properties
+
+# env front end
+.env
+
+# backend
+**/app.jceks
+**/app.pub.der
+**/app.key.der
+now.txt
+
+# for portal project
+supplier-portal/shared
+customer-portal/shared
+
+# npm report nonsense
+web/report.*
+
+# direnv
+.envrc
+
+*.pgdump
+*.pgdump.7z
+
+# sonarqube
+sonar-project.properties
+.scannerwork

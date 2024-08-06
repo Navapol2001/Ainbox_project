@@ -1,0 +1,13 @@
+steps:
+  # build the Docker image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/ace-memento-422711-q6/ainbox', '.']
+  # push the Docker image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/ace-memento-422711-q6/ainbox']
+  # Deploy container image to Cloud Run
+- name: google/cloud-sdk
+  args: ['run', 'deploy', 'ainbox', '--image', 'gcr.io/ace-memento-422711-q6/ainbox', '--region', 'asia-southeast1', '--allow-unauthenticated', '--platform', 'managed']
+
+images:
+  - 'gcr.io/ace-memento-422711-q6/ainbox'

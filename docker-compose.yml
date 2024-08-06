@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+  ai:
+    build:
+      context: ./ai
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./ai:/app
+      - ./ai/data:/data
+    env_file: ./ai/.env
+    restart: always
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./backend:/app
+      - ./backend/data:/data
+    env_file: ./backend/.env
+    restart: always
+
+  portal:
+    build:
+      context: ./portal
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./portal:/app
+      - ./portal/data:/data
+    env_file: ./portal/.env
+    restart: always
+
+  landing_page:
+    build:
+      context: ./landing_page
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./landing_page:/app
+      - ./landing_page/data:/data
+    env_file: ./landing_page/.env
+    restart: always
+
+networks:
+  default:
+    name: app-network

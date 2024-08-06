@@ -1,0 +1,42 @@
+{
+  "name": "ainbox_portal",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@types/react-highlight-words": "^0.20.0",
+    "antd": "^5.18.0",
+    "axios": "^1.7.2",
+    "firebase": "^10.12.3",
+    "framer-motion": "^11.2.6",
+    "gapi-script": "^1.2.0",
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-google-login": "^5.2.2",
+    "react-highlight-words": "^0.20.0",
+    "react-icons": "^5.2.1",
+    "react-intersection-observer": "^9.10.2",
+    "react-scroll": "^1.9.0",
+    "react-thailand-address-typeahead": "^2.0.1",
+    "react-toastify": "^10.0.5",
+    "sweetalert2": "^11.6.13",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/react-scroll": "^1.8.10",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}

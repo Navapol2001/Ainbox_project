@@ -1,0 +1,14 @@
+name: ainbox
+channels:
+  - defaults
+dependencies:
+  - python=3.11.9
+  
+  - pip:
+    - fastapi
+    - uvicorn
+    - pymongo==4.7.2
+    - anthropic
+    - litellm
+    - google-generativeai
+

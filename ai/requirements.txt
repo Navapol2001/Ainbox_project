@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pymongo==4.7.2
+google-generativeai
+litellm
+langfuse
+cachetools
+websockets
