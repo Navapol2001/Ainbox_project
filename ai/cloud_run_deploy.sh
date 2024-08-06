@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# Change to the ai directory
-cd ai
-
 # Build and deploy
 gcloud builds submit --tag asia-southeast1-docker.pkg.dev/x-object-425917-m2/test-repo/ainbox_ai .
 gcloud run deploy ainbox \

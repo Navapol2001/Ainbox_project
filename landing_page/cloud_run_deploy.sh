@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# Change to the landing_page directory
-cd landing_page
-
 # Build and deploy
 gcloud builds submit --tag asia-southeast1-docker.pkg.dev/x-object-425917-m2/test-repo/ainbox_landing_page .
 gcloud run deploy landingpage \

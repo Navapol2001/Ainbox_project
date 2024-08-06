@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# Change to the portal directory
-cd portal
-
 # Build and deploy
 gcloud builds submit --tag asia-southeast1-docker.pkg.dev/x-object-425917-m2/test-repo/ainbox_portal .
 gcloud run deploy protal \
