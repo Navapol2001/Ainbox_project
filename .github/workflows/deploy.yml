@@ -10,15 +10,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Authenticate with Google Cloud
-      - id: "auth"
-        uses: google-github-actions/auth@v1.1.1
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
         with:
-          credentials_json: "${{ secrets.GCP_SA_KEY }}"
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      # Setup gcloud CLI/SDK
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.PROJECT_ID }}
+
+      - name: Configure gcloud CLI
+        run: |
+          gcloud config set project ${{ secrets.PROJECT_ID }}
+          gcloud auth configure-docker asia-southeast1-docker.pkg.dev
 
       - name: Deploy AI Service
         env:
