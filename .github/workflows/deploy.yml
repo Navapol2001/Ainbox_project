@@ -22,21 +22,25 @@ jobs:
       - name: Deploy AI Service
         run: |
           cd ai
+          chmod +x cloud_run_deploy.sh
           ./cloud_run_deploy.sh
 
       - name: Deploy Backend Service
         run: |
           cd backend
+          chmod +x cloud_run_deploy.sh
           ./cloud_run_deploy.sh
 
       - name: Deploy Portal Service
         run: |
           cd portal
+          chmod +x cloud_run_deploy.sh
           ./cloud_run_deploy.sh
 
       - name: Deploy Landing Page Service
         run: |
           cd landing_page
+          chmod +x cloud_run_deploy.sh
           ./cloud_run_deploy.sh
 
       - name: Deploy Services and Configure Load Balancer
