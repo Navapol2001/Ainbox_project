@@ -20,24 +20,32 @@ jobs:
           export_default_credentials: true
 
       - name: Deploy AI Service
+        env:
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
         run: |
           cd ai
           chmod +x cloud_run_deploy.sh
           ./cloud_run_deploy.sh
 
       - name: Deploy Backend Service
+        env:
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
         run: |
           cd backend
           chmod +x cloud_run_deploy.sh
           ./cloud_run_deploy.sh
 
       - name: Deploy Portal Service
+        env:
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
         run: |
           cd portal
           chmod +x cloud_run_deploy.sh
           ./cloud_run_deploy.sh
 
       - name: Deploy Landing Page Service
+        env:
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
         run: |
           cd landing_page
           chmod +x cloud_run_deploy.sh
