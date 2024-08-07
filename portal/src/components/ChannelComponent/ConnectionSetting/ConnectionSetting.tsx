@@ -262,7 +262,7 @@ const ConnectionSetting: React.FC = () => {
                 onClick={handleConnect}
                 disabled={isConnecting}
               >
-                {isConnecting ? 'กำลังเชื่อมต่อ...' : 'เชื่อมต่อ'}
+                {isConnecting ? 'กำลังเชื่อมต่อ...' : 'เชื่อมต่อ LINE'}
               </button>
             )}
           </div>
