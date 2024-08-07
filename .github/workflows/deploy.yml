@@ -5,7 +5,28 @@ on:
     branches: [main]
 
 jobs:
+  check_changes:
+    runs-on: ubuntu-latest
+    outputs:
+      ai_changed: ${{ steps.check_files.outputs.ai_changed }}
+      backend_changed: ${{ steps.check_files.outputs.backend_changed }}
+      portal_changed: ${{ steps.check_files.outputs.portal_changed }}
+      landing_page_changed: ${{ steps.check_files.outputs.landing_page_changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Check for file changes
+        id: check_files
+        run: |
+          git diff --name-only HEAD^ HEAD > changes.txt
+          echo "ai_changed=$( grep -q '^ai/' changes.txt && echo 'true' || echo 'false' )" >> $GITHUB_OUTPUT
+          echo "backend_changed=$( grep -q '^backend/' changes.txt && echo 'true' || echo 'false' )" >> $GITHUB_OUTPUT
+          echo "portal_changed=$( grep -q '^portal/' changes.txt && echo 'true' || echo 'false' )" >> $GITHUB_OUTPUT
+          echo "landing_page_changed=$( grep -q '^landing_page/' changes.txt && echo 'true' || echo 'false' )" >> $GITHUB_OUTPUT
+
   deploy:
+    needs: check_changes
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,6 +47,7 @@ jobs:
           gcloud auth configure-docker asia-southeast1-docker.pkg.dev
 
       - name: Deploy AI Service
+        if: needs.check_changes.outputs.ai_changed == 'true'
         env:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
         run: |
@@ -34,6 +56,7 @@ jobs:
           ./cloud_run_deploy.sh
 
       - name: Deploy Backend Service
+        if: needs.check_changes.outputs.backend_changed == 'true'
         env:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
         run: |
@@ -42,6 +65,7 @@ jobs:
           ./cloud_run_deploy.sh
 
       - name: Deploy Portal Service
+        if: needs.check_changes.outputs.portal_changed == 'true'
         env:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
         run: |
@@ -50,6 +74,7 @@ jobs:
           ./cloud_run_deploy.sh
 
       - name: Deploy Landing Page Service
+        if: needs.check_changes.outputs.landing_page_changed == 'true'
         env:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
         run: |
@@ -58,6 +83,7 @@ jobs:
           ./cloud_run_deploy.sh
 
       - name: Configure Load Balancer
+        if: needs.check_changes.outputs.ai_changed == 'true' || needs.check_changes.outputs.backend_changed == 'true' || needs.check_changes.outputs.portal_changed == 'true' || needs.check_changes.outputs.landing_page_changed == 'true'
         run: |
           # Create serverless NEG for each Cloud Run service
           gcloud compute network-endpoint-groups create ainbox-neg \

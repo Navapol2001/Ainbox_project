@@ -18,6 +18,7 @@ ENV MONGO_DB_URI=mongodb+srv://navapols:mNTv4yxxXfekI5xe@atlascluster.bc0euhx.mo
 ENV MODEL_API_KEY=AIzaSyD0E0og-OPYR2fdp0rcgzuGOBBwBr-5Vo0 
 ENV LANGFUSE_PUBLIC_KEY=pk-lf-f6ecc748-b229-40dd-83c3-59b93bac37ab
 ENV LANGFUSE_SECRET_KEY=sk-lf-80ea0b82-a340-41a3-b724-62e566237259
+ENV Signature_Endpoint=https://backend-ke5m6qbmkq-as.a.run.app
 ENV PORT=8080
 
 EXPOSE 8080
