@@ -1,7 +1,6 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface IStore extends Document {
-  line_user_id?: string;
   channel_secret?: string;
   page_access_token?: string;
   page_id: string;

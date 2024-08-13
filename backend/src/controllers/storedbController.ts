@@ -4,7 +4,6 @@ import TierStatus from '../models/tierStatusModel';
 import StatusCheck from '../models/statusCheckModel';
 import BotQuota from '../models/botQuotaModel';
 import PageAccount from '../models/pageAccountModel';
-import CustomerStatus from '../models/customerStatusModel';
 import { signatureVerificationMiddleware } from '../middleware/signatureMiddleware';
 import { signatureStore } from '../utils/signatureStore';
 
@@ -50,14 +49,6 @@ export const createStore = [
       });
       await newPageAccount.save();
 
-      // Create and save customer status
-      const newCustomerStatus = new CustomerStatus({
-        line_user_id: store.line_user_id,
-        page_id: store.page_id,
-        status: 1
-      });
-      await newCustomerStatus.save();
-
       res.status(201).json({ 
         message: 'Store created successfully',
         store: newStore,
@@ -65,7 +56,6 @@ export const createStore = [
         statusCheck: newStatusCheck,
         botQuota: newBotQuota,
         pageAccount: newPageAccount,
-        CustomerStatus: newCustomerStatus
       });
       signatureStore.clear();
     } catch (err) {
@@ -74,3 +64,50 @@ export const createStore = [
     }
   }
 ];
+
+// Get a store by its ID
+export const getStoreByDetails = async (req: Request, res: Response) => {
+  try {
+    const { aiName, businessName } = req.params;
+    const store = await Store.findOne(
+      { 
+        'details.ai_name': aiName, 
+        'details.business_name': businessName 
+      }
+    )
+    if (!store) {
+      return res.status(404).json({message: 'Store not found '})
+    }
+    res.status(200).json(store)
+  } catch (err) {
+    console.error('Error fetching store:', err);
+    res.status(500).json({ error: 'Failed to fetch store' });
+  }
+}
+
+// Update a store by its ID
+export const updateStoreByDetails = async (req: Request, res: Response) => {
+  try {
+    const { aiName, businessName } = req.params;
+    const updateData: Partial<IStore> = req.body;
+
+    const updatedStore = await Store.findOneAndUpdate(
+      { 
+        'details.ai_name': aiName,
+        'details.business_name': businessName
+      },
+      updateData,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedStore) {
+      return res.status(404).json({ message: 'Store not found' });
+    }
+
+    res.status(200).json({ message: 'Store updated successfully', store: updatedStore });
+  } catch (err) {
+    console.error('Error updating store:', err);
+    res.status(500).json({ error: 'Failed to update store' });
+  }
+};
+

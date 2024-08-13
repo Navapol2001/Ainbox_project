@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { register, login, logout, refreshToken } from '../controllers/authController';
 import { registerValidation, loginValidation, businessValidation, productValidation } from '../middleware/validationMiddleware';
 import { authMiddleware } from '../middleware/authMiddleware';
-import { createStore } from '../controllers/storedbController';
+import { createStore, updateStoreByDetails, getStoreByDetails } from '../controllers/storedbController';
 import { createBusiness, deleteBusinessById, getBusinessById, getBusinesses, updateBusinessById } from '../controllers/businessController';
 import { createProduct, deleteProductById, getProductById, getProducts, updateProductById } from '../controllers/productController';
 import { signatureVerificationMiddleware } from '../middleware/signatureMiddleware';
@@ -20,6 +20,8 @@ router.post('/createStore/:userId',
   signatureVerificationMiddleware, 
   createStore
 );
+router.patch('/updateStore/:aiName/:businessName', authMiddleware, updateStoreByDetails);
+router.get('getStore/:aiName/:businessName', authMiddleware, getStoreByDetails)
 
 // Business routes
 router.post('/business', authMiddleware, businessValidation, createBusiness);
