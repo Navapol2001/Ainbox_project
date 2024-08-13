@@ -59,7 +59,7 @@ const ecommerceService = {
   async createProduct(productDetail: IProductToHandle): Promise<IProduct> {
     return await apiCall("post", "/product", productDetail);
   },
-  async editChennel(id: string, dataToEdit: IBusinessToHandle): Promise<IBusiness> {
+  async editChannel(id: string, dataToEdit: IBusinessToHandle): Promise<IBusiness> {
     return await apiCall("patch", `/updateBusiness/${id}`, dataToEdit);
   },
   //อัพเดต ข้อมูลเพาะส่วนของ Product

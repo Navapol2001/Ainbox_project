@@ -47,7 +47,7 @@ const EditAI: React.FC = () => {
     e.preventDefault();
     if (dataChannel) {
       try {
-        await ecommerceService.editChennel(dataChannel._id, formDataAI);
+        await ecommerceService.editChannel(dataChannel._id, formDataAI);
         const store = await ecommerceService.getStoreByDetails(dataChannel!.ai_name, dataChannel!.business_name);
         const dataStore: IStoreToHandle = {
           details: {

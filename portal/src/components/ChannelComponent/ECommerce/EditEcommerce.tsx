@@ -81,19 +81,20 @@ const EditEcommerce: React.FC = () => {
 
     if (dataChannel) {
       try {
-        await ecommerceService.editChennel(dataChannel._id, dataToSubmit);
-        const store = await ecommerceService.getStoreByDetails(dataChannel!.ai_name, dataChannel!.business_name);
+        await ecommerceService.editChannel(dataChannel._id, dataToSubmit);
+        // const store = await ecommerceService.getStoreByDetails(dataChannel!.ai_name, dataChannel!.business_name);
         const dataStore: IStoreToHandle = {
           details: {
             ...dataToSubmit,
           },
         };
+        await ecommerceService.editStore(dataChannel!.ai_name, dataChannel!.business_name, dataStore);
 
-        if (store) {
-          await ecommerceService.editStore(dataChannel!.ai_name, dataChannel!.business_name, dataStore);
-        } else {
-          console.log('Store not found');
-        }
+        // if (store) {
+        //   await ecommerceService.editStore(dataChannel!.ai_name, dataChannel!.business_name, dataStore);
+        // } else {
+        //   console.log('Store not found');
+        // }
         toast.success("ข้อมูลถูกบันทึกเรียบร้อยแล้ว");
         toggleEdit();
       } catch (error) {
