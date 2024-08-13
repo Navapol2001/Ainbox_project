@@ -6,13 +6,14 @@ import { useDataChannel, useProductStore } from "@/store/dataChannel";
 import Opentime from "@/components/OpenTime/Opentime";
 import { ToastContainer, toast } from "react-toastify";
 import "@/components/ChannelComponent/ECommerce/Ecommerce.css";
-import { Address, FormData } from "@/models/IEcommerceChannel";
+import { Address } from "@/models/IEcommerceChannel";
 import ecommerceService from "@/service/ChannelService/EcommerceService";
 import { AddressInput } from "@/components/ChannelComponent/ECommerce/AddressInput";
 import { ScollUpToTop } from "@/utils/Scoll";
 import { IProduct } from "@/models/IChannel";
 import Swal from "sweetalert2";
 import showAlert from "@/components/Alert/Alert";
+import { IStoreToHandle, IFormData } from "@/models/IChannel";
 
 const EditEcommerce: React.FC = () => {
   ScollUpToTop();
@@ -73,8 +74,7 @@ const EditEcommerce: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const { address, ...rest } = formData;
-    const addressString = `${address.detailedAddress}, ตำบล ${address.subdistrict}, อำเภอ ${address.district}, จังหวัด ${address.province}, รหัสไปรษณีย์ ${address.zipcode}`;
-    const dataToSubmit: FormData = {
+    const dataToSubmit: IFormData = {
       ...rest,
       address: address,
     };
@@ -82,6 +82,18 @@ const EditEcommerce: React.FC = () => {
     if (dataChannel) {
       try {
         await ecommerceService.editChennel(dataChannel._id, dataToSubmit);
+        const store = await ecommerceService.getStoreByDetails(dataChannel!.ai_name, dataChannel!.business_name);
+        const dataStore: IStoreToHandle = {
+          details: {
+            ...dataToSubmit,
+          },
+        };
+
+        if (store) {
+          await ecommerceService.editStore(dataChannel!.ai_name, dataChannel!.business_name, dataStore);
+        } else {
+          console.log('Store not found');
+        }
         toast.success("ข้อมูลถูกบันทึกเรียบร้อยแล้ว");
         toggleEdit();
       } catch (error) {

@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { IStore, IBusiness, IProductToHandle, IBusinessToHandle} from "@/models/IChannel";
+import { IStore, IBusiness, IProductToHandle, IBusinessToHandle, IStoreToHandle} from "@/models/IChannel";
 import { IProduct } from "@/models/IChannel";
 
 const frontendUrl =
@@ -49,6 +49,9 @@ const ecommerceService = {
   async listProduct(businessId: string): Promise<IProduct[]> {
     return await apiCall("get", `/getProducts/${businessId}`);
   },
+  async getStoreByDetails(aiName: string, businessName: string): Promise<IStore> {
+    return await apiCall("get", `/getStore/${aiName}/${businessName}`);
+  },
   //ส่งข้อมูลทั้งหมดไป backend เพื่อสร้าง Channel ใหม่
   async createChannel(channelDetail: IBusinessToHandle): Promise<IBusiness> {
     return await apiCall("post", "/business", channelDetail);
@@ -64,12 +67,15 @@ const ecommerceService = {
     return await apiCall("patch", `/updateProduct/${id}`, dataToEdit);
     //ที่แยกออกมาจาก edit เพราะว่าเผื่อต้องทำอะไรหากไม่ได้ทำอะไร สามารถใช้เส้น edit ได้เลย
   },
+  async editStore(aiName: string, businessName: string, dataToEdit: IStoreToHandle): Promise<IStore > {
+    return await apiCall("patch", `/updateStore/${aiName}/${businessName}`, dataToEdit)
+  },
   async deleteChennel(id: string): Promise<unknown> {
     return await apiCall("delete", `/deleteBusiness/${id}`);
   },
   async deleteProuct(id: string): Promise<unknown> {
     return await apiCall("delete", `/deleteProduct/${id}`);
-  },
+  }
 };
 
 export default ecommerceService;

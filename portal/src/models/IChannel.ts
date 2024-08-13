@@ -14,7 +14,6 @@ export interface CardChannelProps {
 }
 
 export interface IProduct {
-  key?: string;
   _id: string;
   name: string;
   price: string;
@@ -74,16 +73,38 @@ export interface IStoreDetails {
   website: string;
   opentime: IOpenTime;
   description: string;
-  product: IProductToHandle[];
+  product: IProduct[];
   ai_gender: string;
 }
 
 export interface IStore {
-  line_user_id: string;
   channel_secret: string;
   page_access_token: string;
   page_id: string;
   details: IStoreDetails;
+}
+
+export interface IStoreDetailsToHandle {
+  ai_name?: string;
+  ai_behavior?: string;
+  ai_age?: string;
+  business_name?: string;
+  business_type?: string;
+  address?: Address;
+  phone?: string;
+  email?: string;
+  website?: string;
+  opentime?: IOpenTime;
+  description?: string;
+  product?: IProductToHandle[];
+  ai_gender?: string;
+}
+
+export interface IStoreToHandle {
+  channel_secret?: string;
+  page_access_token?: string;
+  page_id?: string;
+  details?: IStoreDetailsToHandle;
 }
 
 export interface IFormAiDetail {
@@ -91,4 +112,15 @@ export interface IFormAiDetail {
   ai_behavior: string;
   ai_age: string;
   ai_gender: string;
+}
+
+export interface IFormData {
+  business_name: string;
+  business_type: string;
+  description: string;
+  address: Address;
+  phone: string;
+  email: string;
+  website: string;
+  opentime: IOpenTime;
 }

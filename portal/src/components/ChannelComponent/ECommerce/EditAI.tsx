@@ -1,6 +1,6 @@
 "use client";
 import "@/components/ChannelComponent/ECommerce/Ecommerce.css";
-import { IFormAiDetail } from "@/models/IChannel";
+import { IStoreToHandle, IFormAiDetail } from "@/models/IChannel";
 import ecommerceService from "@/service/ChannelService/EcommerceService";
 import { useDataChannel } from "@/store/dataChannel";
 import React, { useEffect, useState } from "react";
@@ -48,6 +48,18 @@ const EditAI: React.FC = () => {
     if (dataChannel) {
       try {
         await ecommerceService.editChennel(dataChannel._id, formDataAI);
+        const store = await ecommerceService.getStoreByDetails(dataChannel!.ai_name, dataChannel!.business_name);
+        const dataStore: IStoreToHandle = {
+          details: {
+            ...formDataAI,
+          },
+        };
+
+        if (store) {
+          await ecommerceService.editStore(dataChannel!.ai_name, dataChannel!.business_name, dataStore);
+        } else {
+          console.log('Store not found');
+        }
         toast.success("บันทึกการแก้ไขเรียบร้อยแล้ว");
         toggleEdit();
       } catch (error) {

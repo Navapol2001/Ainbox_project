@@ -68,6 +68,14 @@ const Products: React.FC = () => {
       );
   
       await ecommerceService.editProduct(productId, filteredUpdatedProduct);
+
+      const store = await ecommerceService.getStoreByDetails(dataChannel!.ai_name, dataChannel!.business_name);
+
+      if (store) {
+        await ecommerceService.editStore(dataChannel!.ai_name, dataChannel!.business_name, filteredUpdatedProduct);
+      } else {
+        console.log('Store not found');
+      }
       
       // Update local state
       const updatedProducts = products.map(product => 
