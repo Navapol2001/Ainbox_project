@@ -112,7 +112,7 @@ class customer_status(QuotaCheck):
         super().__init__()
     def get_status(self, page_id , user_id):
         filter={
-            'page_id': page_id , 'line_user_id':user_id
+            'page_id': page_id , 'user_id':user_id
         }
         status = self.db['customer_status'].find_one(filter)
         
