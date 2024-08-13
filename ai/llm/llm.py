@@ -116,7 +116,7 @@ def chat_activate(self,
     def _chat_e_v1(self,
                    messages: str,
                    page_id: str,
-                   user_id: str) -> dict[Any, Any]:
+                   user_id: str) -> dict:
 
         """
         จัดการการไหลของการสนทนา บันทึกประวัติการสนทนา และส่งคืนคำตอบ
