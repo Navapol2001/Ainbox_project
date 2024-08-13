@@ -5,7 +5,7 @@ from litellm import completion, completion_cost
 from litellm.caching import Cache
 import litellm
 
-from typing import List, Optional, Any
+from typing import Optional, List, Dict, Any, Union
 from .query_memory import QueryMemory
 from .consumption import Consumption
 from .agent.prompt.prompt_system import Ecommerce_page, Information_page
@@ -88,30 +88,30 @@ class ChatAI:
         self.model = "gemini/gemini-1.5-flash"
         # self.model = "claude-3-5-sonnet-20240620"
 
-    def chat_activate(self,
-                      page_id: str,
-                      rank: str,
-                      history: Optional[List[dict], str] = None) -> list[dict[str, str] | Any] | str:
-        """
-        เปิดใช้งานการสนทนาด้วยหน้าและอันดับที่ระบุ โดยเลือกใช้ประวัติการสนทนาที่ให้มา (ถ้ามี)
 
-        Args:
-        - page_id (str): ID ของหน้าที่เปิดใช้งานการสนทนา
-        - rank (str): อันดับของการสนทนา
-        - history (List[dict], optional): ประวัติการสนทนา ค่าเริ่มต้นคือ None
-        """
+def chat_activate(self,
+                  page_id: str,
+                  rank: str,
+                  history: Optional[List[Dict[str, Any]]] = None) -> Union[List[Dict[str, str]], str]:
+    """
+    เปิดใช้งานการสนทนาด้วยหน้าและอันดับที่ระบุ โดยเลือกใช้ประวัติการสนทนาที่ให้มา (ถ้ามี)
 
-        system_instruction = self.prompt_activate(page_id, rank)
+    Args:
+    - page_id (str): ID ของหน้าที่เปิดใช้งานการสนทนา
+    - rank (str): อันดับของการสนทนา
+    - history (Optional[List[Dict[str, Any]]]): ประวัติการสนทนา ค่าเริ่มต้นคือ None
+    """
 
-        if history:
-            messages = [{"content": system_instruction, "role": "system"}, *history]
-            print('history')
-            return messages
-        else:
-            messages = [{"content": system_instruction, "role": "system"}]
-            print('no history')
+    system_instruction = self.prompt_activate(page_id, rank)
 
-            return messages
+    if history:
+        messages = [{"content": system_instruction, "role": "system"}, *history]
+        print('history')
+        return messages
+    else:
+        messages = [{"content": system_instruction, "role": "system"}]
+        print('no history')
+        return messages
 
     def _chat_e_v1(self,
                    messages: str,
