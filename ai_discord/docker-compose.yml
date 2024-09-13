@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  # Application service
+  web:
+    build:
+      context: .
+      args:
+        requirements_file: requirements.txt
+    stdin_open: true
+    tty: true
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+      - ./data:/data
+    env_file: .env
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
