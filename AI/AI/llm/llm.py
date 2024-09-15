@@ -120,7 +120,6 @@ class ChatAI:
         """
         Initializes the ChatAI instance.
         """
-        self.cache = Cache()
         self.e_prompt = Ecommerce()
         self.i_prompt = Information()
         self.memory = QueryMemory()
@@ -149,7 +148,7 @@ class ChatAI:
         else:
             messages = [{"content": system_instruction, "role": "system"}]
             logging.info(messages)
-            
+        
             logging.info('No Memory are Called')
 
             return messages

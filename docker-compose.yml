@@ -2,13 +2,13 @@ version: "3.8"
 services:
   ai:
     build:
-      context: ./ai
+      context: AI_LINE
     ports:
       - "8080:8080"
     volumes:
-      - ./ai:/app
-      - ./ai/data:/data
-    env_file: ./ai/.env
+      - ./AI_LINE:/app
+      - ./AI_LINE/data:/data
+    env_file: AI_LINE/.env
     restart: always
 
   backend:

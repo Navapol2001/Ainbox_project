@@ -1,4 +1,4 @@
-// src/middleware/signatureMiddleware.ts
+// AI/middleware/signatureMiddleware.ts
 
 import { Request, Response, NextFunction } from 'express';
 import { IStore } from '../models/storedbModel';

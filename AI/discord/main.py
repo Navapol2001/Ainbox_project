@@ -1,10 +1,11 @@
+
 import os
 import logging
 import discord
 from dotenv import load_dotenv
 import asyncio
 from fastapi import FastAPI, WebSocket
-from process import process_adapter
+from src.process import process_adapter
 import uvicorn
 
 logging.basicConfig(level=logging.INFO)

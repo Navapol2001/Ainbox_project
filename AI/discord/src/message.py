@@ -1,8 +1,11 @@
-from .llm import ChatAI
 import logging
-from llm.db import db_connect
-
+from .db import db_connect
+import httpx
+import os
+from dotenv import load_dotenv
+load_dotenv()
 logging.basicConfig(level=logging.INFO)
+LLM_ENDPOINT = os.getenv('LLM_ENDPOINT')
 
 class MessageSender(db_connect):
     """
@@ -24,18 +27,10 @@ class MessageSender(db_connect):
         Constructs all the necessary attributes for the MessageSender object.
         """
         super().__init__()
-  
-        self._chat_state = None
 
-    def _chat_init(self):
-        """
-        Initializes the ChatAI instance.
-        """
-        self._chat_state = ChatAI()
-        self._rank = {"EC1": self._chat_state.CHAT_EC_V1, 
-                    "EC2": self._chat_state.CHAT_EC_V2, 
-                    "IF1": self._chat_state.CHAT_INFO_V1, 
-                    "IF2": self._chat_state.CHAT_INFO_V2}
+        self._rank = {"EC1": r"/chat/ec/v1/",  
+                    "IF1": r"/chat/info/v1/", 
+                    }
 
     async def send_message_discord(self, 
                                    user_id: str, 
@@ -60,10 +55,26 @@ class MessageSender(db_connect):
             Exception: If the message fails to send.
         """
         #self._customer.create_customer(user_id=user_id, page_id=page_id)
-        if self._chat_state is None:
-            self._chat_init()
+
         rank_func = self._rank.get(rank)
-        answer = await rank_func(messages=message, page_id=page_id, user_id=user_id)
+        
+        # Prepare data for the POST request
+        data = {
+            "messages": message,
+            "page_id": page_id,
+            "user_id": user_id
+        }
+
+       # Send the POST request
+        async with httpx.AsyncClient() as client:
+            response = await client.post(url=f"http://{LLM_ENDPOINT}:8000{rank_func}", json=data)
+
+        # Process the response
+        if response.status_code == 200:
+            answer = response.json()
+        else:
+            # Handle non-200 status codes appropriately
+            return {"error": "Request failed"}, response.status_code
         
         method = "discord"
         await self.log_message(method=method, 
@@ -112,8 +123,6 @@ class MessageSender(db_connect):
         """
         Sends a message to a user when the bot is inactive.
         """
-        if self._chat_state is None:
-            self._chat_init()
         await self.log_message(method=method, 
                          page_id=page_id, 
                          user_id=user_id, 

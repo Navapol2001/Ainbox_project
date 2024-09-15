@@ -1,9 +1,8 @@
 import os
 import logging
-from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, Request, WebSocket
 from pydantic import BaseModel
-from process import process_adapter, websocket_handler
+from AI.line.src.process import process_adapter, websocket_handler
 import uvicorn
 
 logging.basicConfig(level=logging.INFO)
