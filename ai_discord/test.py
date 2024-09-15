@@ -1,26 +1,63 @@
+# !gcloud auth application-default login - run this to add vertex credentials to your env
+import litellm, os
+import enum
+import dotenv
+dotenv.load_dotenv()
+import json
+from litellm import completion 
+from pydantic import BaseModel 
 
-import os
-import discord
-from dotenv import load_dotenv
+class Topics(enum.Enum):
+    CONSULT = "consult"
+    ORDER = "order"
+    COMPLAINT = "complaint"
+    GENERAL = "general"
+    PRODUCT = "product"
+    OTHER = "other"
 
-import random
+class Feeling(enum.Enum):
+    HAPPY = "happy"
+    SAD = "sad"
+    ANGRY = "angry"
+    NEUTRAL = "neutral"
 
-load_dotenv()
-TOKEN = "MTI4NDEzNDUxNjQ5MDc2ODQ1Nw.GGffW_.-EFTOgajUT2UNgjsAvAaX4EZAK987I6gycS_tg"
+class Actions(enum.Enum):
+    Actions = "direct_response"
 
-intents = discord.Intents.default()
-intents.message_content = True
-client = discord.Client(intents=intents)
 
-@client.event
-async def on_message(message):
-    print(message)
-    if message.author == client.user:
-        return
+class Answerable(enum.Enum):
+    YES = 1
+    NO = 0
 
-   
+class Ecomerce_Response(BaseModel):
+  answer_response: str
+  topic: Topics
+  action: Actions
+  customer_feeling: Feeling
+  answer_able:Answerable
 
-    if message.content == '#99!':
-        await message.channel.send("hi")
+class Information_Response(BaseModel):
+  answer_response: str
+  topic: Topics
+  action: Actions
+  customer_feeling: Feeling
 
-client.run(TOKEN)
+    
+messages=[
+        {"role": "system", "content": "Answer user with answer_response and analyze user feeling"},
+        {"role": "user", "content": "สวัสดีคับเป็นยังไงบ้างครับ"},
+    ]
+
+litellm.enable_json_schema_validation = True
+os.environ['LITELLM_LOG'] = 'DEBUG'
+
+
+resp = completion(
+    model="gemini/gemini-1.5-flash",
+    messages=messages,
+    response_format=Ecomerce_Response,
+    api_key=os.getenv('MODEL_API_KEY')
+)
+data = json.loads(resp.choices[0].message.content)
+print(data)
+print(type(data))

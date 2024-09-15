@@ -4,12 +4,14 @@ import logging
 from litellm import completion, completion_cost
 from litellm.caching import Cache
 import litellm
+import enum
 from typing import List, Optional, Any
 from .query_memory import QueryMemory
 from .consumption import Consumption
 from .agent.prompt.ecommerce import Ecommerce 
 from .agent.prompt.info import Information 
 import dotenv
+from pydantic import BaseModel
 logging.basicConfig(level=logging.INFO)
 
 dotenv.load_dotenv()
@@ -18,6 +20,42 @@ litellm.failure_callback = ["langfuse"]  # logs errors to langfuse
 # Make completion calls
 os.environ["LANGFUSE_PUBLIC_KEY"] = os.getenv('LANGFUSE_PUBLIC_KEY')
 os.environ["LANGFUSE_SECRET_KEY"] = os.getenv('LANGFUSE_SECRET_KEY')
+
+class Topics(enum.Enum):
+    CONSULT = "consult"
+    ORDER = "order"
+    COMPLAINT = "complaint"
+    GENERAL = "general"
+    PRODUCT = "product"
+    OTHER = "other"
+
+class Feeling(enum.Enum):
+    HAPPY = "happy"
+    SAD = "sad"
+    ANGRY = "angry"
+    NEUTRAL = "neutral"
+
+class Actions(enum.Enum):
+    Actions = "direct_response"
+
+
+class Answerable(enum.Enum):
+    YES = 1
+    NO = 0
+
+class Ecomerce_Response(BaseModel):
+  answer_response: str
+  topic: Topics
+  action: Actions
+  customer_feeling: Feeling
+  answer_able:Answerable
+
+class Information_Response(BaseModel):
+  answer_response: str
+  topic: Topics
+  action: Actions
+  customer_feeling: Feeling
+    
 
 
 MODEL = os.getenv('MODEL')
@@ -154,7 +192,8 @@ class ChatAI:
                 model=MODEL,  # เปลี่ยน Model Name และ API เพื่อเปลี่ยนค่าย AI
                 messages=chat_session.copy(),
                 api_key=MODEL_API,
-                user=page_id
+                user=page_id,
+                response_format=Ecomerce_Response
             )
             # logging.info(chat_session)
             ##################################################################################################
@@ -217,7 +256,9 @@ class ChatAI:
                 model=MODEL,  # เปลี่ยน Model Name และ API เพื่อเปลี่ยนค่าย AI
                 messages=chat_session.copy(),
                 api_key=MODEL_API,
-                user=page_id
+                user=page_id,
+                response_format=Information_Response
+                
             )
             # logging.info(chat_session)
             ##################################################################################################

@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 load_dotenv()
 app = FastAPI(
     title="Discord_Hook",
-    description="Line endpoint for webhook and message sending.",
+    description="Discord endpoint for webhook and message sending.",
     version="0.0.1",
     docs_url='/',
 )

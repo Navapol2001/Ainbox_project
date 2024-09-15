@@ -68,10 +68,7 @@ class QueryMemory(db_connect):
         conversation_history = []
         for record in history:
             conversation_history.append({"role": "user", "content": record['user']})
-            conversation_history.append({"role": "assistant", "content": f"""'answer_response': {record['chat']}\n
-                                         'topic':null\n
-                                         'action':'direct_response'\n
-                                         'customer_feeling':null\n"""})
 
-        print(conversation_history)
+            conversation_history.append({"role": "assistant", "content": record['chat']})
+
         return conversation_history[-16:]
